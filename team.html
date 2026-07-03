@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IRG Legacy Leadership Institute — Cohort Certification Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F4EFE3; --paper-2:#EBE3D1; --card:#FBF8F0; --ink:#1E1A13; --muted:#8A806D;
+    --gold:#A8822C; --gold-2:#C6A557; --gold-wash:#EFE4C9; --line:#DBD0B8; --black:#14110B;
+    --ok:#5C6A3A; --ok-wash:#EEF0E4;
+    --shadow:0 1px 2px rgba(30,26,19,.05), 0 12px 34px -18px rgba(30,26,19,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  .display{font-family:"Cormorant Garamond","EB Garamond",serif;}
+  .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:500;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  button{font-family:inherit;cursor:pointer}
+  a{color:var(--gold)}
+  .hidden{display:none !important}
+
+  .topbar{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#F7F2E7,var(--paper));position:sticky;top:0;z-index:20;}
+  .topbar-in{display:flex;align-items:center;gap:16px;padding:14px 24px;max-width:1040px;margin:0 auto;}
+  .seal-mini{width:42px;height:42px;flex:none}
+  .brandtext{display:flex;flex-direction:column;line-height:1.05}
+  .brandtext .n1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:20px;letter-spacing:.02em}
+  .brandtext .n2{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .topbar-right{margin-left:auto;font-size:13px;color:var(--muted)}
+
+  .page{padding:36px 0 90px}
+  .page-head{text-align:center;margin:6px 0 26px}
+  .page-head h2{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:32px;margin:8px 0 6px}
+  .page-head p{color:var(--muted);margin:0;font-size:16px}
+  .rule{height:1px;background:var(--line);border:none;max-width:120px;margin:16px auto 0}
+
+  .summary{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:22px 0 8px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:12px 20px;text-align:center;min-width:150px;box-shadow:var(--shadow)}
+  .stat .big{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;line-height:1}
+  .stat .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+  .track-group{margin-top:40px}
+  .track-group-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--gold);padding-bottom:8px;margin-bottom:4px}
+  .track-group-head .tg-name{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:24px}
+  .track-group-head .tg-out{margin-left:auto;font-size:13px;color:var(--gold);letter-spacing:.06em;text-align:right}
+  .roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:18px}
+  .emp-card{background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:var(--shadow);padding:18px 18px 16px;display:flex;gap:16px;align-items:center;text-align:left;cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .emp-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px -10px rgba(30,26,19,.4)}
+  .ring-wrap{flex:none;width:66px;height:66px;position:relative}
+  .ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-weight:600;font-size:17px}
+  .emp-meta{flex:1;min-width:0}
+  .emp-meta .en{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:600;line-height:1.1;margin:0}
+  .emp-meta .er{color:var(--muted);font-style:italic;font-size:13px;margin:2px 0 8px}
+  .emp-status{font-size:12.5px;letter-spacing:.03em}
+  .emp-status.done{color:var(--ok)} .emp-status.prog{color:var(--gold)} .emp-status.none{color:var(--muted)}
+  .chef-flag{display:inline-block;margin-top:6px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:99px;padding:2px 8px}
+
+  .back{background:none;border:none;color:var(--gold);font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:0;margin-bottom:20px;display:inline-flex;gap:8px}
+  .back:hover{color:var(--ink)}
+  .detail-head{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .detail-head .ring-wrap{width:96px;height:96px}
+  .detail-head .ring-pct{font-size:22px}
+  .dh-titles .lvl{color:var(--gold);font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+  .dh-titles h2{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:30px;margin:4px 0 2px;line-height:1.05}
+  .dh-titles .er{color:var(--muted);font-style:italic;font-size:16px;margin:0}
+  .dh-titles .goal{color:var(--ink);font-size:14px;margin:6px 0 0}
+  .dh-titles .goal b{color:var(--gold);font-weight:500}
+
+  .prog-banner{margin:22px 0 4px;background:var(--ok-wash);border:1px solid #cdd3b4;border-left:3px solid var(--ok);padding:14px 16px;border-radius:3px;color:#42502a;font-size:15px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .prog-banner .grow{flex:1}
+  .prog-cert-btn{background:var(--ok);border:1px solid var(--ok);color:#fff;padding:8px 16px;border-radius:3px;font-family:"Cormorant Garamond",serif;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+  .prog-cert-btn:hover{opacity:.9}
+
+  .pillar{margin-top:20px;border:1px solid var(--line);border-radius:5px;background:var(--card);overflow:hidden}
+  .pillar-head{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#F7F1E3;border-bottom:1px solid var(--line);cursor:pointer}
+  .pillar-head .pn{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:19px}
+  .pillar-head .ptag{font-size:11px;letter-spacing:.08em;color:var(--gold);border:1px solid var(--gold-2);border-radius:99px;padding:2px 9px;white-space:nowrap}
+  .pillar-head .pcount{margin-left:auto;font-size:13px;color:var(--muted)}
+  .pillar-head .pbadge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:99px}
+  .pbadge.done{background:var(--ok);color:#fff}
+  .pbadge.prog{background:var(--gold-wash);color:var(--gold)}
+  .pcert-btn{background:none;border:1px solid var(--ok);color:var(--ok);font-family:"Cormorant Garamond",serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:3px}
+  .pcert-btn:hover{background:var(--ok);color:#fff}
+  .pitems{padding:4px 18px 10px}
+  .item{display:flex;gap:13px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #EDE6D6;cursor:pointer}
+  .item:last-child{border-bottom:none}
+  .item:hover{background:#F7F2E6}
+  .checkbox{flex:none;width:22px;height:22px;border:1.5px solid var(--gold);border-radius:3px;background:#fff;margin-top:1px;position:relative}
+  .item.checked .checkbox{background:var(--gold);border-color:var(--gold)}
+  .checkbox svg{position:absolute;inset:0;width:100%;height:100%;stroke:#fff;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+  .item.checked .checkbox svg{opacity:1}
+  .item-label{font-size:16px;line-height:1.4}
+  .item.checked .item-label{color:var(--muted)}
+  .item .assess{color:var(--gold);font-style:italic}
+
+  .gmpath{margin-top:34px;border:1px dashed var(--gold);border-radius:6px;background:linear-gradient(180deg,#FBF5E6,#FBF8F0);padding:20px 22px}
+  .gmpath h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:22px;margin:0 0 3px}
+  .gmpath .sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+  .gmrow{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid #EDE6D6;font-size:15.5px}
+  .gmrow:last-child{border-bottom:none}
+  .gmmark{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:1px}
+  .gmmark.done{background:var(--ok);color:#fff}
+  .gmmark.part{background:var(--gold-wash);color:var(--gold);border:1px solid var(--gold-2)}
+  .gmmark.todo{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+  .gmrow .gl{flex:1}
+  .gmrow .gs{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);align-self:center}
+  .gmrow .gs.done{color:var(--ok)} .gmrow .gs.part{color:var(--gold)} .gmrow .gs.todo{color:var(--muted)}
+  .gmsummary{margin-top:14px;font-size:14px;color:var(--ink);background:var(--gold-wash);border-radius:4px;padding:10px 14px}
+
+  .cert-overlay{position:fixed;inset:0;z-index:60;background:rgba(20,17,11,.62);display:none;overflow:auto;padding:28px}
+  .cert-overlay.show{display:block}
+  .cert-tools{max-width:1000px;margin:0 auto 16px;display:flex;justify-content:flex-end;gap:12px}
+  .cert-tools button{font-family:"Cormorant Garamond",serif;font-size:14px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:10px 18px;border-radius:3px;border:1px solid #F4EFE3;background:transparent;color:#F4EFE3;cursor:pointer}
+  .cert-tools #certPrint{background:#F4EFE3;color:#14110B}
+  .cert-tools button:hover{opacity:.88}
+  .cert-scroll{max-width:1000px;margin:0 auto}
+  .certificate{background:var(--card);padding:20px}
+  .cert-frame{border:2px solid var(--gold);outline:1px solid var(--gold);outline-offset:6px;padding:50px 58px 42px;text-align:center;background:radial-gradient(circle at 50% -10%,#FCF9F1,#F6F0E2)}
+  .cert-seal{margin:0 auto 8px;width:110px;height:110px}
+  .cert-inst{font-family:"Cormorant Garamond",serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-size:14px;font-weight:600}
+  .cert-h{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:600;margin:8px 0 2px;letter-spacing:.02em}
+  .cert-sub{font-style:italic;color:var(--muted);font-size:17px;margin-top:14px}
+  .cert-name{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:600;color:var(--ink);margin:6px auto 4px;padding:0 30px 8px;border-bottom:1px solid var(--gold);display:inline-block}
+  .cert-body{max-width:600px;margin:12px auto 0;color:var(--ink);font-size:16px;line-height:1.5}
+  .cert-title{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;color:var(--gold);margin:12px 0 2px}
+  .cert-role{font-style:italic;color:var(--muted);font-size:16px}
+  .cert-awarded{margin-top:20px;font-size:15px;letter-spacing:.05em;color:var(--ink)}
+  .cert-sign{display:flex;justify-content:center;margin-top:24px}
+  .sign-col{min-width:280px}
+  .sign-line{height:34px;border-bottom:1px solid var(--ink);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px}
+  .sign-cap{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .cert-tag{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-size:17px;margin-top:24px}
+
+  @media print{
+    @page{size:landscape;margin:10mm}
+    body{background:#fff}
+    body>*{display:none !important}
+    #certOverlay{display:block !important;position:static;background:#fff;padding:0;overflow:visible}
+    #certOverlay .cert-tools{display:none !important}
+    #certOverlay .cert-scroll{max-width:none;margin:0}
+    .certificate{padding:0}
+  }
+
+  footer.brandfoot{border-top:1px solid var(--line);text-align:center;padding:26px 24px;color:var(--muted);font-size:13px}
+  footer.brandfoot em{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px;color:var(--gold);display:block;margin-bottom:6px}
+  .syncpill{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:8px 16px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .syncpill.show{opacity:1;transform:translateY(0)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .dot.ok{background:var(--ok)} .dot.local{background:var(--muted)} .dot.err{background:#a24a2c}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="seal-mini" id="sealMini"></span>
+    <div class="brandtext">
+      <span class="n1">IRG Legacy Leadership Institute&trade;</span>
+      <span class="n2">Cohort Certification Board</span>
+    </div>
+    <div class="topbar-right">Internal &bull; Leadership Development</div>
+  </div>
+</div>
+
+<section class="page wrap" id="overview">
+  <div class="page-head">
+    <div class="eyebrow">Level 2 &amp; Level 3 Certification Program</div>
+    <h2 class="display">Team Development Board</h2>
+    <p>Track every leader through their pillars. Each pillar certifies on completion; finishing the track earns the program certification.</p>
+    <hr class="rule" />
+  </div>
+  <div class="summary" id="summary"></div>
+  <div id="groups"></div>
+</section>
+
+<section class="page wrap hidden" id="detail"></section>
+
+<div class="cert-overlay" id="certOverlay" aria-hidden="true">
+  <div class="cert-tools">
+    <button id="certPrint">Print / Save as PDF</button>
+    <button id="certClose">Close</button>
+  </div>
+  <div class="cert-scroll"><div class="certificate"><div class="cert-frame" id="certCard"></div></div></div>
+</div>
+
+<div class="syncpill" id="syncPill"><span class="dot" id="syncDot"></span><span id="syncText">Saved</span></div>
+
+<footer class="brandfoot">
+  <em>"Leaders who develop people build brands that outlive them."</em>
+  Iconic Restaurant Group &nbsp;&bull;&nbsp; Confidential &bull; Internal Use Only
+</footer>
+
+<script>
+/* OPTIONAL: paste your Google Apps Script Web App URL to log this board to a
+   sheet too. Leave "" for local (this device). */
+const SHEET_ENDPOINT = "";
+
+/* PILLAR LIBRARY — mirrored from the four tracking sheets.
+   The LAST item of each pillar is its assessment / sign-off. */
+const P = {
+  agm_p2:{ name:"Pillar 2 — Hospitality & Guest Experience", tag:"Passed by Day 30", items:[
+    "Hospitality fundamentals and guest standards",
+    "Guest recovery and service recovery frameworks",
+    "Pillar 2 assessment passed"] },
+  agm_p3:{ name:"Pillar 3 — Shift Management", tag:"Passed by Day 45", items:[
+    "Shift planning and pre-shift execution",
+    "In-shift leadership and floor management",
+    "Pillar 3 assessment passed"] },
+  agm_p4:{ name:"Pillar 4 — Labor Leadership & Management", tag:"Passed by Day 45", items:[
+    "Labor scheduling and productivity standards",
+    "Team accountability and labor cost %",
+    "Pillar 4 assessment passed"] },
+  agm_p5:{ name:"Pillar 5 — COGs & Financial Acumen", tag:"Passed by Day 60", items:[
+    "Food cost fundamentals and ordering",
+    "Waste, variance and basic P&L reading",
+    "Pillar 5 assessment passed"] },
+  agm_hr:{ name:"HR Module", tag:"Completed by Day 45", signoff:"Shavonne", items:[
+    "Workplace conduct and documentation standards",
+    "Harassment prevention and IRG culture",
+    "HR module assessment passed — Shavonne sign-off"] },
+  agm_bar:{ name:"Pillar 6 — Bar Ops (AGM Track)", tag:"Kevin sign-off", signoff:"Kevin", items:[
+    "Bar standards and brand beverage overview",
+    "Menu knowledge and guest-facing bar fluency",
+    "Responsible service and compliance standards",
+    "AGM-level bar oversight during peak service",
+    "AGM validation — signed off by Kevin"] },
+
+  bar_found:{ name:"Pillar 6 — Bar Foundations (AGM Track)", signoff:"Kevin", items:[
+    "Bar standards and brand beverage overview",
+    "Menu knowledge and guest-facing bar fluency",
+    "Responsible service and compliance standards",
+    "AGM-level bar oversight during peak service",
+    "AGM validation — signed off by Kevin"] },
+  bar_mgr:{ name:"Pillar 6 — Bar Manager", tag:"Kevin sign-off", signoff:"Kevin", items:[
+    "Full beverage program ownership and menu execution",
+    "Inventory management, ordering, and pour cost",
+    "Bar team leadership and training delivery",
+    "Spirits, wine, and beer knowledge certification",
+    "Cocktail execution standards and quality control",
+    "Compliance — TABC / ABC and responsible service",
+    "Full Bar Manager certification — Kevin sign-off"] },
+
+  chef_p5:{ name:"Pillar 5 — COGs", items:[
+    "Mod 1 — food cost fundamentals",
+    "Mod 2 — ordering, waste, variance",
+    "Assessment passed"] },
+  chef_p4:{ name:"Pillar 4 — Labor", items:[
+    "Mod 1 — labor scheduling",
+    "Mod 2 — accountability and labor cost %",
+    "Assessment passed"] },
+  chef_p7:{ name:"Pillar 7 — Operations", items:[
+    "Mod 1 — BOH operations planning",
+    "Mod 2 — culinary success frameworks",
+    "Certification signed"] },
+  chef_hr:{ name:"HR Module — Culinary Lead", signoff:"Shavonne", items:[
+    "Module — culinary lead track",
+    "Sign-off by Shavonne"] },
+
+  gm_found:{ name:"Foundations", tag:"Day 1–10", items:[
+    "PT brand standards and restaurant ops"] },
+  gm_p1:{ name:"Pillar 1 — Leadership & Culture", tag:"Day 10–20", items:[
+    "Leadership and culture fundamentals"] },
+  gm_p2:{ name:"Pillar 2 — Hospitality", tag:"Day 20–28", items:[
+    "Hospitality and guest experience"] },
+  gm_p3:{ name:"Pillar 3 — Shift Management", tag:"Day 28–30", signoff:"Patrick", items:[
+    "Shift management excellence",
+    "Day 30 gate — check-in with Patrick"] },
+  gm_p4:{ name:"Pillar 4 — Labor", tag:"Day 30–45", items:[
+    "Labor scheduling and productivity standards",
+    "Team accountability and labor cost ownership",
+    "Pillar 4 assessment sign-off"] },
+  gm_hr:{ name:"HR Module (GM Track)", tag:"Day 45–55", signoff:"Shavonne", items:[
+    "GM track — delivered by Shavonne",
+    "Assessment signed off by Shavonne"] },
+  gm_p5:{ name:"Pillar 5 — COGs & Financial Acumen (GM level)", tag:"Day 55–60", signoff:"Patrick", items:[
+    "COGs and financial acumen — GM level",
+    "Day 60 gate — mid-program assessment sign-off"] },
+  gm_p7:{ name:"Pillar 7 — Operations Success Planning", tag:"Day 65–78", items:[
+    "Operations success planning"] },
+  gm_adv:{ name:"Advanced — People Leadership & Development", tag:"Day 78–85", items:[
+    "People leadership and development"] },
+  gm_final:{ name:"Final — GMIT Certification", tag:"Day 90", signoff:"Patrick", items:[
+    "Assessments and Patrick review session",
+    "Day 90 gate — full GMIT certification sign-off"] },
+};
+
+const TRACKS = {
+  gm:   { name:"GM Track",   level:3, cert:"IRG Certified General Manager\u2122",  out:"Level 3 — IRG Certified General Manager\u2122",
+          pillars:["gm_found","gm_p1","gm_p2","gm_p3","gm_p4","gm_hr","gm_p5","gm_p7","gm_adv","gm_final"] },
+  agm:  { name:"AGM Track",  level:2, cert:"IRG Certified Business Leader\u2122",   out:"Level 2 — IRG Certified Business Leader\u2122",
+          pillars:["agm_p2","agm_p3","agm_p4","agm_p5","agm_hr","agm_bar"] },
+  chef: { name:"Chef Track", level:2, cert:"IRG Certified Business Leader\u2122",   out:"Level 2 — IRG Certified Business Leader\u2122",
+          pillars:["chef_p5","chef_p4","chef_p7","chef_hr"] },
+  bar:  { name:"Bar Track",  level:2, cert:"IRG Certified Business Leader\u2122",   out:"Level 2 — IRG Certified Business Leader\u2122",
+          pillars:["bar_found","bar_mgr","agm_hr"] },
+};
+
+const EMPLOYEES = [
+  { slug:"mark-ramos", name:"Mark Ramos", track:"gm",  role:"General Manager" },
+
+  { slug:"savie",   name:"Savanna Estein",          nick:"Savie", track:"agm", role:"Assistant General Manager" },
+  { slug:"abbey",   name:"Abigail McGee",           nick:"Abbey", track:"agm", role:"Assistant General Manager" },
+  { slug:"jp",      name:"Justin Pingleton",        nick:"JP",    track:"agm", role:"Assistant General Manager" },
+  { slug:"caitlyn", name:"Caitlyn Cassreino",       track:"agm", role:"Assistant General Manager" },
+  { slug:"andrea",  name:"Andrea Gonzalez Barraza", track:"agm", role:"Assistant General Manager" },
+
+  { slug:"reese",  name:"Reese Kirby",       track:"bar", role:"Bar Manager" },
+  { slug:"kellen", name:"Kellen Fitzgerald", track:"bar", role:"Bar Manager" },
+
+  { slug:"patty",  name:"Patrick Dubreus", nick:"Patty", track:"chef", role:"Junior Sous Chef" },
+  { slug:"tessa",  name:"Tessa Edwards",   track:"chef", role:"Junior Sous Chef" },
+  { slug:"trevor", name:"Trevor Dykes",    track:"chef", role:"Junior Sous Chef" },
+
+  { slug:"cristian", name:"Cristian Diaz",  track:"chef", role:"Executive Chef", gmPath:true },
+  { slug:"mateo",    name:"Mateo Calderon", track:"chef", role:"Executive Chef", gmPath:true },
+  { slug:"james",    name:"James Riojas",   track:"chef", role:"Executive Chef", gmPath:true },
+];
+
+const GM_REQUIRED = [
+  { name:"Foundations — brand standards & restaurant ops", covers:null },
+  { name:"Pillar 1 — Leadership & Culture", covers:null },
+  { name:"Pillar 2 — Hospitality", covers:null },
+  { name:"Pillar 3 — Shift Management", covers:null },
+  { name:"Pillar 4 — Labor (GM level)", covers:"chef_p4" },
+  { name:"Pillar 5 — COGs & Financial Acumen (GM level)", covers:"chef_p5" },
+  { name:"Pillar 7 — Operations Success Planning", covers:"chef_p7" },
+  { name:"HR Module (GM track)", covers:"chef_hr" },
+  { name:"Advanced — People Leadership & Development", covers:null },
+  { name:"Final — GMIT Certification & Patrick review", covers:null },
+];
+
+let PROG = {};
+let DATES = {};
+function load(){ try{ PROG=JSON.parse(localStorage.getItem("irg-cohort::prog"))||{}; }catch(e){PROG={}}
+                try{ DATES=JSON.parse(localStorage.getItem("irg-cohort::dates"))||{}; }catch(e){DATES={}} }
+function save(){ try{ localStorage.setItem("irg-cohort::prog",JSON.stringify(PROG)); localStorage.setItem("irg-cohort::dates",JSON.stringify(DATES)); }catch(e){} }
+function itemKey(pid,i){ return pid+"::"+i; }
+function isChecked(slug,pid,i){ return !!(PROG[slug] && PROG[slug][itemKey(pid,i)]); }
+
+function pushRemote(payload){
+  if(!SHEET_ENDPOINT) return Promise.resolve("local");
+  return fetch(SHEET_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(()=> "ok").catch(()=> "err");
+}
+
+function emp(slug){ return EMPLOYEES.find(e=>e.slug===slug); }
+function pillarStats(slug,pid){
+  const items=P[pid].items, n=items.filter((_,i)=>isChecked(slug,pid,i)).length;
+  return { n, total:items.length, done:n===items.length };
+}
+function empStats(slug){
+  const e=emp(slug), pills=TRACKS[e.track].pillars;
+  let n=0,tot=0,pc=0;
+  pills.forEach(pid=>{ const s=pillarStats(slug,pid); n+=s.n; tot+=s.total; if(s.done)pc++; });
+  return { itemsDone:n, itemsTotal:tot, pct:Math.round(n/tot*100), pillarsDone:pc, pillarsTotal:pills.length, certified:pc===pills.length };
+}
+
+function sealSVG(px){ return `
+  <svg viewBox="0 0 200 200" width="${px}" height="${px}" xmlns="http://www.w3.org/2000/svg" aria-label="IRG seal">
+    <defs><path id="top" d="M 100,100 m -74,0 a 74,74 0 1,1 148,0" fill="none"/><path id="bot" d="M 100,100 m 70,0 a 70,70 0 1,1 -140,0" fill="none"/></defs>
+    <circle cx="100" cy="100" r="92" fill="none" stroke="#A8822C" stroke-width="2.5"/>
+    <circle cx="100" cy="100" r="64" fill="none" stroke="#A8822C" stroke-width="1.4"/>
+    <text font-family="Cormorant Garamond, serif" font-size="15" letter-spacing="4" fill="#A8822C" font-weight="600"><textPath href="#top" startOffset="50%" text-anchor="middle">HISTORY · COMMUNITY</textPath></text>
+    <text font-family="Cormorant Garamond, serif" font-size="15" letter-spacing="4" fill="#A8822C" font-weight="600"><textPath href="#bot" startOffset="50%" text-anchor="middle">HOSPITALITY</textPath></text>
+    <text x="100" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="46" font-weight="600" letter-spacing="2" fill="#A8822C">IRG</text>
+    <text x="100" y="130" text-anchor="middle" font-family="EB Garamond, serif" font-size="9" letter-spacing="3" fill="#A8822C">EST 2017</text>
+  </svg>`; }
+function ringSVG(pct){ const r=40,c=2*Math.PI*r,off=c*(1-pct/100); return `
+  <svg viewBox="0 0 100 100" width="100%" height="100%">
+    <circle cx="50" cy="50" r="${r}" fill="none" stroke="#DBD0B8" stroke-width="7"/>
+    <circle cx="50" cy="50" r="${r}" fill="none" stroke="${pct===100?'#5C6A3A':'#A8822C'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 50 50)" style="transition:stroke-dashoffset .5s ease"/>
+  </svg>`; }
+
+function renderOverview(){
+  let certified=0, inprog=0, total=EMPLOYEES.length;
+  EMPLOYEES.forEach(e=>{ const s=empStats(e.slug); if(s.certified)certified++; else if(s.pct>0)inprog++; });
+  document.getElementById("summary").innerHTML = `
+    <div class="stat"><div class="big">${total}</div><div class="lab">Leaders in program</div></div>
+    <div class="stat"><div class="big" style="color:var(--ok)">${certified}</div><div class="lab">Fully certified</div></div>
+    <div class="stat"><div class="big" style="color:var(--gold)">${inprog}</div><div class="lab">In progress</div></div>
+    <div class="stat"><div class="big">${total-certified-inprog}</div><div class="lab">Not started</div></div>`;
+
+  const groups=document.getElementById("groups"); groups.innerHTML="";
+  ["gm","agm","chef","bar"].forEach(tk=>{
+    const list=EMPLOYEES.filter(e=>e.track===tk);
+    if(!list.length) return;
+    const g=document.createElement("div"); g.className="track-group";
+    g.innerHTML = `<div class="track-group-head"><span class="tg-name display">${TRACKS[tk].name}</span><span class="tg-out">${TRACKS[tk].out}</span></div><div class="roster"></div>`;
+    const roster=g.querySelector(".roster");
+    list.forEach(e=>{
+      const s=empStats(e.slug);
+      let cls,txt;
+      if(s.certified){cls="done";txt="&#10003; Certified — "+TRACKS[tk].cert;}
+      else if(s.pct>0){cls="prog";txt=`In progress — ${s.pillarsDone}/${s.pillarsTotal} pillars`;}
+      else{cls="none";txt="Not started";}
+      const card=document.createElement("div"); card.className="emp-card";
+      card.innerHTML = `
+        <div class="ring-wrap">${ringSVG(s.pct)}<div class="ring-pct">${s.pct}%</div></div>
+        <div class="emp-meta">
+          <p class="en">${e.name}${e.nick?` <span style="font-size:13px;color:var(--muted);font-style:italic;font-weight:400">(${e.nick})</span>`:''}</p>
+          <p class="er">${e.role}</p>
+          <div class="emp-status ${cls}">${txt}</div>
+          ${e.gmPath?'<span class="chef-flag">Path to GM tracked</span>':''}
+        </div>`;
+      card.addEventListener("click",()=>openEmp(e.slug));
+      roster.appendChild(card);
+    });
+    groups.appendChild(g);
+  });
+}
+
+let CURRENT=null;
+function openEmp(slug){
+  CURRENT=slug;
+  const e=emp(slug), tk=TRACKS[e.track], s=empStats(slug);
+  const d=document.getElementById("detail");
+  let html = `
+    <button class="back" id="backBtn">&larr; Back to board</button>
+    <div class="detail-head">
+      <div class="ring-wrap">${ringSVG(s.pct)}<div class="ring-pct">${s.pct}%</div></div>
+      <div class="dh-titles">
+        <div class="lvl">${tk.name} &bull; Level ${tk.level} Program</div>
+        <h2 class="display">${e.name}</h2>
+        <p class="er">${e.role}${e.nick?` &bull; known as &ldquo;${e.nick}&rdquo;`:''}</p>
+        <p class="goal">On completion: <b>${tk.cert}</b> &mdash; ${e.role}</p>
+      </div>
+    </div>
+    ${s.certified
+      ? `<div class="prog-banner"><span class="grow"><b>&#10003; Program complete.</b> All ${s.pillarsTotal} pillars certified. ${e.name} has earned ${tk.cert}.</span><button class="prog-cert-btn" id="progCert">Program certificate</button></div>`
+      : `<div class="prog-banner" style="background:var(--gold-wash);border-color:var(--line);border-left-color:var(--gold);color:#6c5a24"><span class="grow"><b>${s.pillarsDone} of ${s.pillarsTotal} pillars certified.</b> Finish every pillar to award ${tk.cert}.</span></div>`}
+    <div id="pillarHost"></div>`;
+  d.innerHTML=html;
+
+  const host=d.querySelector("#pillarHost");
+  tk.pillars.forEach(pid=>{
+    const pl=P[pid], st=pillarStats(slug,pid);
+    const panel=document.createElement("div"); panel.className="pillar";
+    panel.innerHTML = `
+      <div class="pillar-head">
+        <span class="pn">${pl.name}</span>
+        ${pl.tag?`<span class="ptag">${pl.tag}</span>`:''}
+        ${st.done
+          ? `<span class="pbadge done">&#10003; Certified</span><button class="pcert-btn" data-pid="${pid}">Certificate</button>`
+          : `<span class="pcount">${st.n}/${st.total}</span><span class="pbadge prog">In progress</span>`}
+      </div>
+      <div class="pitems"></div>`;
+    const box=panel.querySelector(".pitems");
+    pl.items.forEach((label,i)=>{
+      const on=isChecked(slug,pid,i);
+      const isAssess=(i===pl.items.length-1);
+      const row=document.createElement("div"); row.className="item"+(on?" checked":"");
+      row.innerHTML = `<span class="checkbox"><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17.5 19 7"/></svg></span>
+        <span class="item-label ${isAssess?'assess':''}">${label}</span>`;
+      row.addEventListener("click",()=>toggle(slug,pid,i));
+      box.appendChild(row);
+    });
+    const cbtn=panel.querySelector(".pcert-btn");
+    if(cbtn) cbtn.addEventListener("click",ev=>{ev.stopPropagation(); openPillarCert(slug,pid);});
+    host.appendChild(panel);
+  });
+
+  if(e.gmPath){ host.appendChild(buildGmPath(slug)); }
+
+  d.querySelector("#backBtn").addEventListener("click",showOverview);
+  const pc=d.querySelector("#progCert"); if(pc) pc.addEventListener("click",()=>openProgramCert(slug));
+
+  document.getElementById("overview").classList.add("hidden");
+  d.classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function buildGmPath(slug){
+  const wrap=document.createElement("div"); wrap.className="gmpath";
+  let remaining=0, rows="";
+  GM_REQUIRED.forEach(req=>{
+    let state="todo", label="Required for GM — not in Chef track";
+    if(req.covers){
+      const st=pillarStats(slug,req.covers);
+      if(st.done){ state="done"; label="Covered by Chef track (certified)"; }
+      else if(st.n>0){ state="part"; label="In progress on Chef track"; }
+      else { state="part"; label="Started on Chef track (via " + P[req.covers].name.split(' — ')[0] + ")"; }
+    }
+    if(state!=="done") remaining++;
+    const mark = state==="done"?"&#10003;":(state==="part"?"&#189;":"+");
+    rows += `<div class="gmrow">
+      <span class="gmmark ${state}">${mark}</span>
+      <span class="gl">${req.name}</span>
+      <span class="gs ${state}">${label}</span>
+    </div>`;
+  });
+  wrap.innerHTML = `
+    <h3 class="display">Path to GM &mdash; Level 3</h3>
+    <p class="sub">What ${emp(slug).name} still needs beyond the Executive Chef (Level 2) track to reach IRG Certified General Manager&trade;.</p>
+    ${rows}
+    <div class="gmsummary"><b>${remaining}</b> of ${GM_REQUIRED.length} GM pillars still open. The Chef track covers Labor, COGs, Operations, and HR; the remaining items are the GM-only leadership and program pillars.</div>`;
+  return wrap;
+}
+
+function toggle(slug,pid,i){
+  PROG[slug]=PROG[slug]||{};
+  const k=itemKey(pid,i);
+  const nowOn=!PROG[slug][k];
+  if(nowOn) PROG[slug][k]=true; else delete PROG[slug][k];
+
+  const e=emp(slug), tk=TRACKS[e.track];
+  const pkey=slug+"::"+pid;
+  if(pillarStats(slug,pid).done){ if(!DATES[pkey]) DATES[pkey]=new Date().toISOString(); }
+  else { delete DATES[pkey]; }
+  const prog=empStats(slug);
+  const progKey=slug+"::PROGRAM";
+  if(prog.certified){ if(!DATES[progKey]) DATES[progKey]=new Date().toISOString(); }
+  else { delete DATES[progKey]; }
+
+  save();
+  openEmp(slug);
+
+  syncStart();
+  pushRemote({ employeeId:slug, employeeName:e.name, role:e.role, track:tk.name,
+    level:tk.level, cert:tk.cert, pillar:P[pid].name, item:P[pid].items[i],
+    done:nowOn, pillarCertified:pillarStats(slug,pid).done, programCertified:prog.certified,
+    percentComplete:prog.pct, timestamp:new Date().toISOString() }).then(syncEnd);
+}
+
+function fmt(iso){ return new Date(iso||Date.now()).toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"}); }
+function signCaption(signoff){ return signoff ? (signoff+" &middot; Iconic Restaurant Group") : "Dee &amp; Sara Northcutt &middot; Awarding Leader"; }
+function signName(signoff){ return signoff || "Dee &amp; Sara Northcutt"; }
+
+function openProgramCert(slug){
+  const e=emp(slug), tk=TRACKS[e.track], date=fmt(DATES[slug+"::PROGRAM"]);
+  document.getElementById("certCard").innerHTML = `
+    <div class="cert-seal">${sealSVG(110)}</div>
+    <div class="cert-inst">IRG Legacy Leadership Institute&trade;</div>
+    <div class="cert-h display">Certificate of Achievement</div>
+    <div class="cert-sub">This certifies that</div>
+    <div class="cert-name display">${e.name}</div>
+    <div class="cert-body">has completed every pillar of the ${tk.name} and is hereby recognized as an</div>
+    <div class="cert-title display">${tk.cert}</div>
+    <div class="cert-role">${e.role}</div>
+    <div class="cert-awarded">Awarded on ${date}</div>
+    <div class="cert-sign"><div class="sign-col"><div class="sign-line">Dee &amp; Sara Northcutt</div><div class="sign-cap">Awarding Leader &middot; Iconic Restaurant Group</div></div></div>
+    <div class="cert-tag">"Building Something That Outlives Us&trade;"</div>`;
+  showCert();
+}
+function openPillarCert(slug,pid){
+  const e=emp(slug), tk=TRACKS[e.track], pl=P[pid], date=fmt(DATES[slug+"::"+pid]);
+  document.getElementById("certCard").innerHTML = `
+    <div class="cert-seal">${sealSVG(110)}</div>
+    <div class="cert-inst">IRG Legacy Leadership Institute&trade; &bull; ${tk.name}</div>
+    <div class="cert-h display">Pillar Certification</div>
+    <div class="cert-sub">This certifies that</div>
+    <div class="cert-name display">${e.name}</div>
+    <div class="cert-body">has met every requirement and passed the assessment for</div>
+    <div class="cert-title display">${pl.name}</div>
+    <div class="cert-role">${e.role} &bull; ${tk.name}</div>
+    <div class="cert-awarded">Certified on ${date}</div>
+    <div class="cert-sign"><div class="sign-col"><div class="sign-line">${signName(pl.signoff)}</div><div class="sign-cap">${signCaption(pl.signoff)}</div></div></div>
+    <div class="cert-tag">"Building Something That Outlives Us&trade;"</div>`;
+  showCert();
+}
+function showCert(){ const o=document.getElementById("certOverlay"); o.classList.add("show"); o.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; }
+function closeCert(){ const o=document.getElementById("certOverlay"); o.classList.remove("show"); o.setAttribute("aria-hidden","true"); document.body.style.overflow=""; }
+
+let pillTimer=null;
+function syncStart(){ const p=document.getElementById("syncPill"); document.getElementById("syncDot").className="dot"; document.getElementById("syncText").textContent=SHEET_ENDPOINT?"Saving\u2026":"Saving on this device\u2026"; p.classList.add("show"); clearTimeout(pillTimer); }
+function syncEnd(res){ const dot=document.getElementById("syncDot"),txt=document.getElementById("syncText");
+  if(res==="ok"){dot.className="dot ok";txt.textContent="Saved to sheet";}
+  else if(res==="local"){dot.className="dot local";txt.textContent="Saved on this device";}
+  else {dot.className="dot err";txt.textContent="Saved locally — sheet unreachable";}
+  clearTimeout(pillTimer); pillTimer=setTimeout(()=>document.getElementById("syncPill").classList.remove("show"),2000); }
+
+function showOverview(){ document.getElementById("detail").classList.add("hidden"); renderOverview(); document.getElementById("overview").classList.remove("hidden"); window.scrollTo({top:0,behavior:"instant"}); }
+
+document.getElementById("sealMini").innerHTML=sealSVG(42);
+document.getElementById("certPrint").addEventListener("click",()=>window.print());
+document.getElementById("certClose").addEventListener("click",closeCert);
+document.getElementById("certOverlay").addEventListener("click",e=>{if(e.target.id==="certOverlay")closeCert();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCert();});
+
+load();
+renderOverview();
+</script>
+</body>
+</html>
