@@ -403,7 +403,7 @@ function renderOverview(){
           <p class="en">${e.name}${e.nick?` <span style="font-size:13px;color:var(--muted);font-style:italic;font-weight:400">(${e.nick})</span>`:''}</p>
           <p class="er">${e.role}</p>
           <div class="emp-status ${cls}">${txt}</div>
-          ${e.gmPath?'<span class="chef-flag">Path to GM tracked</span>':''}
+          ${e.gmPath?'<span class="chef-flag">Path to Level 3 tracked</span>':''}
         </div>`;
       card.addEventListener("click",()=>openEmp(e.slug));
       roster.appendChild(card);
@@ -492,10 +492,10 @@ function buildGmPath(slug){
     </div>`;
   });
   wrap.innerHTML = `
-    <h3 class="display">Path to GM &mdash; Level 3</h3>
+    <h3 class="display">Path to Level 3</h3>
     <p class="sub">What ${emp(slug).name} still needs beyond the Executive Chef (Level 2) track to reach IRG Certified General Manager&trade;.</p>
     ${rows}
-    <div class="gmsummary"><b>${remaining}</b> of ${GM_REQUIRED.length} GM pillars still open. The Chef track covers Labor, COGs, Operations, and HR; the remaining items are the GM-only leadership and program pillars.</div>`;
+    <div class="gmsummary"><b>${remaining}</b> of ${GM_REQUIRED.length} Level 3 pillars still open. The Chef track covers Labor, COGs, Operations, and HR; the remaining items are the Level 3-only leadership and program pillars.</div>`;
   return wrap;
 }
 
