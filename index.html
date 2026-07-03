@@ -78,6 +78,15 @@
     background:#fff;border:1px solid var(--line);border-radius:3px;outline:none;letter-spacing:.03em;
   }
   .field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-wash)}
+  .field select{
+    width:100%;padding:12px 40px 12px 14px;font-family:inherit;font-size:17px;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:3px;outline:none;letter-spacing:.03em;cursor:pointer;
+    -webkit-appearance:none;-moz-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23A8822C' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;background-position:right 14px center;
+  }
+  .field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-wash)}
+  .field select.placeholder{color:var(--muted)}
   .btn-primary{
     width:100%;margin-top:8px;background:var(--black);color:#F4EFE3;border:none;border-radius:3px;
     padding:14px 18px;font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:600;
@@ -268,8 +277,24 @@
       <input id="empId" type="text" autocomplete="off" placeholder="e.g. IRG-04821" />
     </div>
     <div class="field">
-      <label for="empName">Name <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+      <label for="empName">Full name</label>
       <input id="empName" type="text" autocomplete="off" placeholder="First &amp; last name" />
+    </div>
+    <div class="field">
+      <label for="empPosition">Current position</label>
+      <select id="empPosition" class="placeholder">
+        <option value="" disabled selected>Select your position&hellip;</option>
+        <option>Culinary Lead</option>
+        <option>Kitchen Manager</option>
+        <option>Executive Chef</option>
+        <option>Lead Bartender</option>
+        <option>Bar Manager</option>
+        <option>Assistant General Manager</option>
+        <option>General Manager</option>
+        <option>MUM &ndash; Director of Culinary</option>
+        <option>MUM &ndash; Director of Operations</option>
+        <option>MUM &ndash; Beverage Director</option>
+      </select>
     </div>
     <button class="btn-primary" id="loginBtn">Load my progress</button>
     <p class="fineprint" id="signinNote"></p>
@@ -308,7 +333,7 @@
 <script>
 /* Paste your Google Apps Script Web App URL between the quotes to log to a
    sheet and sync across devices. Leave "" for local (per-device) mode. */
-const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwNGNsdYQ09PjQBHInx0qLPu0pEmfn4VpTnpAHCAS35842GmEQ7CnzdO1rcNRKrgtsH/exec";
+const SHEET_ENDPOINT = "";
 
 const TRACKS = [
   {
@@ -445,7 +470,7 @@ const ALL_ITEMS = {};
 TRACKS.forEach(tr => tr.sections.forEach(s => s.items.forEach(it => { ALL_ITEMS[it.id] = {track:tr.id, section:s.name, label:it.t}; })));
 function trackItemIds(tr){ return tr.sections.flatMap(s => s.items.map(i => i.id)); }
 
-let EMP = { id:"", name:"" };
+let EMP = { id:"", name:"", position:"" };
 let DONE = {};
 let COMPLETED = {};
 const LKEY = () => "irg-cert::" + EMP.id.trim().toLowerCase();
@@ -524,7 +549,7 @@ function checkCompletions(){
       COMPLETED[tr.id] = new Date().toISOString();
       saveCompleted();
       pushRemote({
-        employeeId:EMP.id, employeeName:EMP.name, trackId:tr.id, trackName:tr.cert, role:tr.role,
+        employeeId:EMP.id, employeeName:EMP.name, position:EMP.position, trackId:tr.id, trackName:tr.cert, role:tr.role,
         itemId:"CERTIFICATE", itemLabel:"Certification earned", section:"Certification Earned",
         done:true, percentComplete:100, timestamp:COMPLETED[tr.id]
       });
@@ -561,11 +586,11 @@ function openCertificate(id){
     <div class="cert-name display">${name}</div>
     <div class="cert-body">has fulfilled every curriculum, field application, and assessment requirement, and is hereby recognized as an</div>
     <div class="cert-title display">${tr.cert}</div>
-    <div class="cert-role">${tr.role}</div>
+    <div class="cert-role">${EMP.position || tr.role}</div>
     <div class="cert-awarded">Awarded on ${dateStr}</div>
     <div class="cert-sign">
-      <div class="sign-col"><div class="sign-line"></div><div class="sign-cap">Awarding Leader &middot; Director of Operations</div></div>
-      <div class="sign-col"><div class="sign-line script">Dee &amp; Sara Northcutt</div><div class="sign-cap">Owners &middot; Iconic Restaurant Group</div></div>
+      <div class="sign-col"><div class="sign-line script">Dee Northcutt</div><div class="sign-cap">Owner &middot; Iconic Restaurant Group</div></div>
+      <div class="sign-col"><div class="sign-line script">Sara Northcutt</div><div class="sign-cap">Owner &middot; Iconic Restaurant Group</div></div>
     </div>
     <div class="cert-tag">"Building Something That Outlives Us&trade;"</div>`;
   const o = document.getElementById("certOverlay");
@@ -687,7 +712,7 @@ function toggleItem(itemId){
   const tr = TRACKS.find(t=>t.id===meta.track);
   const {pct} = trackPct(tr);
   const payload = {
-    employeeId: EMP.id, employeeName: EMP.name,
+    employeeId: EMP.id, employeeName: EMP.name, position: EMP.position,
     trackId: tr.id, trackName: tr.cert, role: tr.role,
     itemId, itemLabel: meta.label, section: meta.section,
     done: nowDone, percentComplete: pct,
@@ -721,8 +746,8 @@ function showDash(){
   window.scrollTo({top:0, behavior:"instant"});
 }
 
-async function signIn(id, name){
-  EMP.id = id.trim(); EMP.name = (name||"").trim();
+async function signIn(id, name, position){
+  EMP.id = id.trim(); EMP.name = (name||"").trim(); EMP.position = (position||"").trim();
   loadLocal();
   loadCompleted();
   const remote = await fetchRemote(EMP.id);
@@ -741,12 +766,13 @@ async function signIn(id, name){
 
 function signOut(){
   try{ localStorage.removeItem("irg-cert::last"); }catch(e){}
-  EMP={id:"",name:""}; DONE={}; COMPLETED={};
+  EMP={id:"",name:"",position:""}; DONE={}; COMPLETED={};
   document.getElementById("topbarRight").style.display="none";
   document.getElementById("dashView").classList.add("hidden");
   document.getElementById("detailView").classList.add("hidden");
   document.getElementById("empId").value="";
   document.getElementById("empName").value="";
+  const ps=document.getElementById("empPosition"); ps.selectedIndex=0; ps.classList.add("placeholder");
   document.getElementById("signinView").classList.remove("hidden");
   window.scrollTo({top:0});
 }
@@ -756,21 +782,30 @@ document.getElementById("sealBig").innerHTML  = sealSVG(96);
 document.getElementById("signinNote").innerHTML =
   SHEET_ENDPOINT
     ? "Your progress is saved to the IRG training sheet and follows you to any device."
-    : "Running in local mode: progress saves in this browser. (Connect a Google Sheet to sync across devices &mdash; see setup notes.)";
+    : "Running in local mode: progress saves in this browser. (Connect a Google Sheet to sync across devices &mdash; see README.)";
 
 const idInput = document.getElementById("empId");
 const nameInput = document.getElementById("empName");
+const posInput = document.getElementById("empPosition");
 const loginBtn = document.getElementById("loginBtn");
 function tryLogin(){
   const id = idInput.value.trim();
-  if(!id){ idInput.focus(); idInput.style.borderColor="#a24a2c"; return; }
+  const name = nameInput.value.trim();
+  const position = posInput.value;
+  let ok = true;
+  if(!id){ idInput.style.borderColor="#a24a2c"; ok=false; }
+  if(!name){ nameInput.style.borderColor="#a24a2c"; ok=false; }
+  if(!position){ posInput.style.borderColor="#a24a2c"; ok=false; }
+  if(!ok) return;
   loginBtn.disabled = true; loginBtn.textContent = "Loading\u2026";
-  signIn(id, nameInput.value).finally(()=>{ loginBtn.disabled=false; loginBtn.textContent="Load my progress"; });
+  signIn(id, name, position).finally(()=>{ loginBtn.disabled=false; loginBtn.textContent="Load my progress"; });
 }
 loginBtn.addEventListener("click", tryLogin);
 idInput.addEventListener("keydown", e=>{ if(e.key==="Enter") nameInput.focus(); });
-nameInput.addEventListener("keydown", e=>{ if(e.key==="Enter") tryLogin(); });
+nameInput.addEventListener("keydown", e=>{ if(e.key==="Enter") posInput.focus(); });
 idInput.addEventListener("input", ()=> idInput.style.borderColor="");
+nameInput.addEventListener("input", ()=> nameInput.style.borderColor="");
+posInput.addEventListener("change", ()=>{ posInput.style.borderColor=""; posInput.classList.toggle("placeholder", !posInput.value); });
 document.getElementById("switchBtn").addEventListener("click", signOut);
 
 document.getElementById("certPrint").addEventListener("click", ()=> window.print());
@@ -780,7 +815,7 @@ document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeCertificate(
 
 try{
   const last = JSON.parse(localStorage.getItem("irg-cert::last"));
-  if(last && last.id){ signIn(last.id, last.name); }
+  if(last && last.id){ signIn(last.id, last.name, last.position); }
 }catch(e){}
 </script>
 </body>
